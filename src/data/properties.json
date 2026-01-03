@@ -1,0 +1,142 @@
+[
+  {
+    "id": "prop1",
+    "type": "House",
+    "bedrooms": 3,
+    "price": 750000,
+    "tenure": "Freehold",
+    "shortDescription": "3 bedroom family house near station",
+    "longDescription": "Attractive three bedroom semi-detached family home close to Petts Wood station with fast trains to London.",
+    "location": "Petts Wood Road, BR5",
+    "postcode": "BR5",
+    "images": [
+      "/images/prop1_1.jpg",
+      "/images/prop1_2.jpg",
+      "/images/prop1_3.jpg",
+      "/images/prop1_4.jpg",
+      "/images/prop1_5.jpg",
+      "/images/prop1_6.jpg"
+    ],
+    "added": "2022-10-12"
+  },
+  {
+    "id": "prop2",
+    "type": "Flat",
+    "bedrooms": 2,
+    "price": 399995,
+    "tenure": "Leasehold",
+    "shortDescription": "Modern 2 bed garden flat",
+    "longDescription": "Modern two-bedroom garden flat with open plan living and private courtyard.",
+    "location": "Crofton Road, BR6",
+    "postcode": "BR6",
+    "images": [
+      "/images/prop2_1.jpg",
+      "/images/prop2_2.jpg",
+      "/images/prop2_3.jpg",
+      "/images/prop2_4.jpg",
+      "/images/prop2_5.jpg",
+      "/images/prop2_6.jpg"
+    ],
+    "added": "2022-09-14"
+  },
+  {
+    "id": "prop3",
+    "type": "House",
+    "bedrooms": 4,
+    "price": 920000,
+    "tenure": "Freehold",
+    "shortDescription": "Spacious 4 bedroom detached house",
+    "longDescription": "Large detached house ideal for families with garden and garage.",
+    "location": "Bromley, BR1",
+    "postcode": "BR1",
+    "images": [
+      "/images/prop3_1.jpg",
+      "/images/prop3_2.jpg",
+      "/images/prop3_3.jpg",
+      "/images/prop3_4.jpg",
+      "/images/prop3_5.jpg",
+      "/images/prop3_6.jpg"
+    ],
+    "added": "2023-01-10"
+  },
+  {
+    "id": "prop4",
+    "type": "Flat",
+    "bedrooms": 1,
+    "price": 275000,
+    "tenure": "Leasehold",
+    "shortDescription": "1 bedroom city apartment",
+    "longDescription": "Compact one-bedroom apartment suitable for professionals.",
+    "location": "London, NW1",
+    "postcode": "NW1",
+    "images": [
+      "/images/prop4_1.jpg",
+      "/images/prop4_2.jpg",
+      "/images/prop4_3.jpg",
+      "/images/prop4_4.jpg",
+      "/images/prop4_5.jpg",
+      "/images/prop4_6.jpg"
+    ],
+    "added": "2023-05-18"
+  },
+  {
+    "id": "prop5",
+    "type": "House",
+    "bedrooms": 5,
+    "price": 1250000,
+    "tenure": "Freehold",
+    "shortDescription": "Luxury 5 bedroom villa",
+    "longDescription": "High-end luxury villa with private garden and parking.",
+    "location": "Surrey, KT1",
+    "postcode": "KT1",
+    "images": [
+      "/images/prop5_1.jpg",
+      "/images/prop5_2.jpg",
+      "/images/prop5_3.jpg",
+      "/images/prop5_4.jpg",
+      "/images/prop5_5.jpg",
+      "/images/prop5_6.jpg"
+    ],
+    "added": "2021-11-02"
+  },
+  {
+    "id": "prop6",
+    "type": "Flat",
+    "bedrooms": 3,
+    "price": 510000,
+    "tenure": "Leasehold",
+    "shortDescription": "3 bedroom apartment",
+    "longDescription": "Bright apartment with balcony and transport links.",
+    "location": "Croydon, CR0",
+    "postcode": "CR0",
+    "images": [
+      "/images/prop6_1.jpg",
+      "/images/prop6_2.jpg",
+      "/images/prop6_3.jpg",
+      "/images/prop6_4.jpg",
+      "/images/prop6_5.jpg",
+      "/images/prop6_6.jpg"
+    ],
+    "added": "2022-07-25"
+  },
+  {
+    "id": "prop7",
+    "type": "House",
+    "bedrooms": 2,
+    "price": 450000,
+    "tenure": "Freehold",
+    "shortDescription": "2 bedroom starter home",
+    "longDescription": "Ideal starter home located in a quiet residential area.",
+    "location": "Ilford, IG1",
+    "postcode": "IG1",
+    "images": [
+      "/images/prop7_1.jpg",
+      "/images/prop7_2.jpg",
+      "/images/prop7_3.jpg",
+      "/images/prop7_4.jpg",
+      "/images/prop7_5.jpg",
+      "/images/prop7_6.jpg"
+    ],
+    "added": "2023-03-08"
+  }
+]
