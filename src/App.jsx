@@ -3,7 +3,7 @@ import properties from "./data/properties.json";
 import SearchForm from "./components/SearchForm.jsx";
 import PropertyCard from "./components/PropertyCard.jsx";
 import PropertyDetails from "./components/PropertyDetails.jsx";
-import FavouritesList from "./components/FavouritesList.jsx"; // ADD THIS
+import FavouritesList from "./components/FavouritesList.jsx";
 import "./App.css";
 
 function App() {
@@ -72,18 +72,24 @@ function App() {
     setFavourites([]);
   }
 
-  // Simple drag and drop
+  // Updated drag and drop handler
   function handleDragOver(e) {
     e.preventDefault();
   }
 
   function handleDrop(e) {
     e.preventDefault();
-    const propertyId = e.dataTransfer.getData("text/plain");
-    const property = properties.find(p => p.id === propertyId);
-    if (property) {
-      addToFavourites(property);
+    const data = e.dataTransfer.getData("text/plain");
+    
+    // Check if it's a regular property ID (adding)
+    if (!data.startsWith("remove:")) {
+      const propertyId = data;
+      const property = properties.find(p => p.id === propertyId);
+      if (property) {
+        addToFavourites(property);
+      }
     }
+    // If it starts with "remove:", it's handled by FavouritesList component
   }
 
   return (
