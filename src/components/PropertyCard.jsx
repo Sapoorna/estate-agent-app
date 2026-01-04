@@ -1,53 +1,62 @@
+import { useState } from 'react';
+
 function PropertyCard({ property, onSelect, onDragAdd }) {
+  const [isDragging, setIsDragging] = useState(false);
+
   const handleDragStart = (e) => {
-    e.dataTransfer.setData("text/plain", property.id);
-    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("propertyId", property.id);
+    e.dataTransfer.effectAllowed = "copy";
+    setIsDragging(true);
   };
 
-  const handleClick = () => {
-    onSelect(property);
-  };
-
-  const handleFavouriteClick = (e) => {
-    e.stopPropagation(); // Don't trigger the card click
-    onDragAdd(property);
+  const handleDragEnd = () => {
+    setIsDragging(false);
   };
 
   return (
-    <div
+    <div 
       className="property-card"
-      draggable
+      draggable="true"
       onDragStart={handleDragStart}
-      onClick={handleClick}
+      onDragEnd={handleDragEnd}
+      style={isDragging ? { opacity: 0.5, cursor: 'grabbing' } : { cursor: 'grab' }}
     >
-      <img
-        src={property.images[0] || "https://via.placeholder.com/400x300"}
+      <img 
+        src={property.images[0] || "https://via.placeholder.com/350x250"} 
         alt={property.shortDescription}
         className="property-image"
-        // Change the onError function
-        onError={(e) => {
-  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231a73e8'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='16' fill='white' text-anchor='middle'%3EProperty Image%3C/text%3E%3C/svg%3E";
-}}
+        onClick={() => onSelect(property)}
+        style={{ cursor: 'pointer' }}
       />
-
+      
       <div className="property-info">
-        <h3>£{property.price.toLocaleString()}</h3>
+        <h3 onClick={() => onSelect(property)} style={{ cursor: 'pointer' }}>
+          £{property.price.toLocaleString()}
+        </h3>
+        
         <p className="property-description">{property.shortDescription}</p>
+        
         <p className="property-specs">
-          {property.bedrooms} bed {property.type} • {property.tenure}
+          🛏️ {property.bedrooms} bed • {property.type} • {property.tenure}
         </p>
-        <p className="property-location">{property.location}</p>
-        <p className="property-date">Added: {property.added}</p>
-
-        <button
+        
+        <p className="property-location">
+          {property.location}
+        </p>
+        
+        <p className="property-date">
+          Added: {new Date(property.added).toLocaleDateString('en-GB')}
+        </p>
+        
+        <button 
           className="favourite-btn"
-          onClick={handleFavouriteClick}
-          aria-label="Add to favourites"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDragAdd(property);
+          }}
         >
           ❤️ Add to Favourites
         </button>
-
-        <p className="drag-hint">👆 Drag me to favourites</p>
       </div>
     </div>
   );

@@ -12,7 +12,6 @@ function App() {
   const [favourites, setFavourites] = useState([]);
 
   function handleSearch(criteria) {
-    // SIMPLIFIED SEARCH FUNCTION
     let filtered = properties.filter((property) => {
       // Type filter
       if (criteria.type && criteria.type !== "any" && property.type !== criteria.type) {
@@ -32,7 +31,7 @@ function App() {
         return false;
       }
 
-      // Date filter (simplified)
+      // Date filter
       if (criteria.startDate) {
         const propertyDate = new Date(property.added);
         const startDate = new Date(criteria.startDate);
@@ -67,11 +66,14 @@ function App() {
     }
   }
 
-  function handleDrop(e) {
+  // Handle drop on favourites container
+  function handleDropOnFavourites(e) {
     e.preventDefault();
     const propertyId = e.dataTransfer.getData("propertyId");
     const property = properties.find(p => p.id === propertyId);
-    if (property) addToFavourites(property);
+    if (property) {
+      addToFavourites(property);
+    }
   }
 
   return (
@@ -92,7 +94,14 @@ function App() {
             <div className="left-panel">
               <SearchForm onSearch={handleSearch} />
               
-              <div onDragOver={(e) => e.preventDefault()} onDrop={handleDrop}>
+              {/* Wrap FavouritesList with drop zone for adding */}
+              <div 
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = "copy";
+                }}
+                onDrop={handleDropOnFavourites}
+              >
                 <FavouritesList
                   favourites={favourites}
                   onRemove={removeFromFavourites}
