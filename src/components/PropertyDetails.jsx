@@ -19,9 +19,9 @@ function PropertyDetails({ property, onBack, onAddFavourite }) {
         <p className="property-type">
           {property.bedrooms} bed {property.type} • {property.tenure}
         </p>
-        <p className="property-location">📍 {property.location}</p>
+        <p className="property-location"> {property.location}</p>
         <button onClick={handleFavourite} className="favourite-btn-large">
-          ❤️ Add to Favourites
+           Add to Favourites
         </button>
       </div>
 
@@ -86,16 +86,12 @@ function PropertyDetails({ property, onBack, onAddFavourite }) {
               referrerPolicy="no-referrer-when-downgrade"
             />
             <p className="map-note">
-              <small>
-                Google Maps embed required by coursework. If map doesn't
-                display, check network settings or CSP permissions.
-              </small>
             </p>
           </div>
           <p className="location-info">
-            <strong>📍 Location:</strong> {property.location}
+            <strong> Location:</strong> {property.location}
             <br />
-            <strong>📮 Postcode:</strong> {property.postcode}
+            <strong> Postcode:</strong> {property.postcode}
           </p>
         </TabPanel>
       </Tabs>

@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  publicDir: 'public', 
   base: '/estate-agent-app/',
   server: {
     hmr: {
@@ -12,6 +13,7 @@ export default defineConfig({
   // Add CSP headers for security
   build: {
     outDir: 'dist',
+    copyPublicDir: true,
     assetsDir: 'assets',
     rollupOptions: {
       output: {

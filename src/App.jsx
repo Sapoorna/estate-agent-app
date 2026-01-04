@@ -90,7 +90,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>🏠 Estate Agent Search</h1>
+        <h1> Estate Agent Search</h1>
       </header>
 
       <main className="app-main">
@@ -126,21 +126,12 @@ function App() {
               
               {results.length === 0 ? (
                 <div className="no-results">
-                  <div className="no-results-icon">🔍</div>
-                  <h3>No Properties Found</h3>
-                  <p>
-                    {hasSearched 
-                      ? "No properties match your search criteria. Try adjusting your filters."
-                      : "Start searching to find properties."}
-                  </p>
+                  <div className="no-results-icon">🏘️</div>
+                  <h3>No Matching Properties</h3>
+                  <p>We couldn't find any properties matching your search criteria.</p>
                   <div className="no-results-suggestions">
-                    <h4>Try:</h4>
-                    <ul>
-                      <li>Widening your price range</li>
-                      <li>Adjusting the number of bedrooms</li>
-                      <li>Searching in a different postcode area</li>
-                      <li>Removing some filters</li>
-                    </ul>
+                    <p><strong>Try adjusting your filters:</strong></p>
+                    
                   </div>
                 </div>
               ) : (

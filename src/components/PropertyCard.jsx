@@ -55,7 +55,7 @@ function PropertyCard({ property, onSelect, onDragAdd }) {
             onDragAdd(property);
           }}
         >
-          ❤️ Add to Favourites
+          Add to Favourites
         </button>
       </div>
     </div>

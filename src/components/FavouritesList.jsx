@@ -52,9 +52,9 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
   if (!favourites || favourites.length === 0) {
     return (
       <div className="favourites-container">
-        <h3>⭐ Favourites</h3>
+        <h3> Favourites</h3>
         <div className="favourites-dropzone">
-          <p>Drag properties here or click ❤️ to add favourites.</p>
+          <p>Drag properties here or click to add favourites.</p>
         </div>
       </div>
     );
@@ -62,7 +62,7 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
 
   return (
     <div className="favourites-container">
-      <h3>⭐ Favourites ({favourites.length})</h3>
+      <h3> Favourites ({favourites.length})</h3>
       
       <div className="favourites-dropzone">
         {favourites.map((fav) => (
@@ -101,7 +101,7 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
         onDragLeave={handleRemoveZoneDragLeave}
         onDrop={handleRemoveZoneDrop}
       >
-        🗑️ DROP HERE TO REMOVE
+         DROP HERE TO REMOVE
       </div>
 
       <button onClick={onClear} className="clear-favourites-btn">

@@ -52,7 +52,7 @@ function SearchForm({ onSearch }) {
 
   return (
     <form className="search-form" onSubmit={handleSubmit}>
-      <h2>🔍 Search Properties</h2>
+      <h2> Search Properties</h2>
 
       <div className="form-group">
         <label>Property Type</label>
