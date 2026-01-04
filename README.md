@@ -1,16 +1,39 @@
-# React + Vite
+# Estate Agent Property Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based Single Page Application (SPA) for searching and managing property listings, built as coursework for Advanced Client-Side Web Development.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Property Search**: Filter by type, price, bedrooms, date, and postcode
+- **React Widgets**: Enhanced form elements using React Widgets library
+- **Image Gallery**: 6-8 professional photos per property with thumbnail navigation
+- **Favourites**: Drag & drop or click to add/remove properties from favourites
+- **Responsive Design**: Mobile-friendly layout with CSS Grid/Flexbox
+- **Security**: CSP headers and XSS protection
+- **Testing**: Comprehensive JEST test coverage
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 18 with Hooks
+- React Widgets for UI components
+- React Tabs for property details
+- Vite for build tooling
+- JEST for testing
+- CSS3 with Flexbox/Grid
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+
+## Testing
+npm test
+
+## Deployment
+npm run deploy
+
+## Author
+Sapoorna Janani
+
+
