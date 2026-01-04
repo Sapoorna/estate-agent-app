@@ -1,76 +1,70 @@
 import { useState } from "react";
-import { Combobox, NumberPicker, DatePicker } from "react-widgets";
-import "react-widgets/styles.css";
+import { DropdownList, NumberPicker, DateTimePicker } from 'react-widgets';
+import 'react-widgets/styles.css';
 
 function SearchForm({ onSearch }) {
-  const [type, setType] = useState("any");
-  const [minPrice, setMinPrice] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(null);
-  const [minBeds, setMinBeds] = useState(null);
-  const [maxBeds, setMaxBeds] = useState(null);
-  const [postcode, setPostcode] = useState("");
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [formData, setFormData] = useState({
+    type: "any",
+    postcode: "",
+    minPrice: null,
+    maxPrice: null,
+    minBeds: null,
+    maxBeds: null,
+    startDate: null,
+    endDate: null
+  });
 
   const propertyTypes = [
     { value: "any", label: "Any Type" },
-    { value: "House", label: "House" },
-    { value: "Flat", label: "Flat" }
+    { value: "house", label: "House" },
+    { value: "flat", label: "Flat" },
+    { value: "bungalow", label: "Bungalow" }
   ];
 
-  const postcodeAreas = ["", "BR1", "BR5", "BR6", "NW1", "KT1", "CR0", "IG1"];
-
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    onSearch({
-      type,
-      minPrice,
-      maxPrice,
-      minBeds,
-      maxBeds,
-      postcode,
-      startDate,
-      endDate
-    });
-  }
+    onSearch(formData);
+  };
 
-  function resetForm() {
-    setType("any");
-    setMinPrice(null);
-    setMaxPrice(null);
-    setMinBeds(null);
-    setMaxBeds(null);
-    setPostcode("");
-    setStartDate(null);
-    setEndDate(null);
+  const handleReset = () => {
+    setFormData({
+      type: "any",
+      postcode: "",
+      minPrice: null,
+      maxPrice: null,
+      minBeds: null,
+      maxBeds: null,
+      startDate: null,
+      endDate: null
+    });
     onSearch({});
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="search-form">
+    <form className="search-form" onSubmit={handleSubmit}>
       <h2>🔍 Search Properties</h2>
-
+      
       <div className="form-group">
         <label>Property Type</label>
-        <Combobox
+        <DropdownList
           data={propertyTypes}
-          valueField="value"
+          dataKey="value"
           textField="label"
-          value={type}
-          onChange={setType}
-          placeholder="Select property type"
+          value={formData.type}
+          onChange={(value) => setFormData({...formData, type: value})}
+          className="styled-select"
+          placeholder="Select type..."
         />
       </div>
 
       <div className="form-group">
         <label>Postcode Area</label>
-        <Combobox
-          data={postcodeAreas}
-          value={postcode}
-          onChange={setPostcode}
+        <input 
+          type="text" 
+          className="styled-input"
           placeholder="e.g., BR1"
-          filter="contains"
+          value={formData.postcode}
+          onChange={(e) => setFormData({...formData, postcode: e.target.value})}
         />
       </div>
 
@@ -78,77 +72,76 @@ function SearchForm({ onSearch }) {
         <div className="form-group">
           <label>Min Price (£)</label>
           <NumberPicker
-            value={minPrice}
-            onChange={setMinPrice}
-            min={0}
+            value={formData.minPrice}
+            onChange={(value) => setFormData({...formData, minPrice: value})}
             placeholder="Any"
+            className="styled-input"
+            min={0}
           />
         </div>
-
         <div className="form-group">
           <label>Max Price (£)</label>
           <NumberPicker
-            value={maxPrice}
-            onChange={setMaxPrice}
-            min={0}
+            value={formData.maxPrice}
+            onChange={(value) => setFormData({...formData, maxPrice: value})}
             placeholder="Any"
+            className="styled-input"
+            min={0}
           />
         </div>
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label>Min Bedrooms</label>
+          <label>Min Beds</label>
           <NumberPicker
-            value={minBeds}
-            onChange={setMinBeds}
+            value={formData.minBeds}
+            onChange={(value) => setFormData({...formData, minBeds: value})}
+            placeholder="Any"
+            className="styled-input"
             min={0}
             max={10}
-            placeholder="Any"
           />
         </div>
-
         <div className="form-group">
-          <label>Max Bedrooms</label>
+          <label>Max Beds</label>
           <NumberPicker
-            value={maxBeds}
-            onChange={setMaxBeds}
+            value={formData.maxBeds}
+            onChange={(value) => setFormData({...formData, maxBeds: value})}
+            placeholder="Any"
+            className="styled-input"
             min={0}
             max={10}
-            placeholder="Any"
           />
         </div>
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label>Added After</label>
-          <DatePicker
-            value={startDate}
-            onChange={setStartDate}
-            placeholder="Any date"
-            max={new Date()}
+          <label>From Date</label>
+          <DateTimePicker
+            value={formData.startDate}
+            onChange={(value) => setFormData({...formData, startDate: value})}
+            placeholder="Select start date"
+            className="styled-input"
+            date
           />
         </div>
-
         <div className="form-group">
-          <label>Added Before</label>
-          <DatePicker
-            value={endDate}
-            onChange={setEndDate}
-            placeholder="Any date"
-            max={new Date()}
+          <label>To Date</label>
+          <DateTimePicker
+            value={formData.endDate}
+            onChange={(value) => setFormData({...formData, endDate: value})}
+            placeholder="Select end date"
+            className="styled-input"
+            date
           />
         </div>
       </div>
 
       <div className="form-buttons">
-        <button type="submit" className="btn-primary">
-          Search Properties
-        </button>
-        <button type="button" onClick={resetForm} className="btn-secondary">
-          Clear Filters
-        </button>
+        <button type="submit" className="btn-primary">Search Properties</button>
+        <button type="button" className="btn-secondary" onClick={handleReset}>Reset Filters</button>
       </div>
     </form>
   );
