@@ -10,9 +10,11 @@ function App() {
   const [results, setResults] = useState(properties);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [favourites, setFavourites] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   function handleSearch(criteria) {
     console.log("Search criteria:", criteria);
+    setHasSearched(true);
     
     let filtered = properties.filter((property) => {
       // Type filter - case insensitive comparison
@@ -120,10 +122,27 @@ function App() {
             </div>
 
             <div className="right-panel">
-              <h2>Search Results ({results.length} properties)</h2>
+              <h2>Search Results ({results.length} {results.length === 1 ? 'property' : 'properties'})</h2>
               
               {results.length === 0 ? (
-                <p>No properties found. Try different filters.</p>
+                <div className="no-results">
+                  <div className="no-results-icon">🔍</div>
+                  <h3>No Properties Found</h3>
+                  <p>
+                    {hasSearched 
+                      ? "No properties match your search criteria. Try adjusting your filters."
+                      : "Start searching to find properties."}
+                  </p>
+                  <div className="no-results-suggestions">
+                    <h4>Try:</h4>
+                    <ul>
+                      <li>Widening your price range</li>
+                      <li>Adjusting the number of bedrooms</li>
+                      <li>Searching in a different postcode area</li>
+                      <li>Removing some filters</li>
+                    </ul>
+                  </div>
+                </div>
               ) : (
                 <div className="results-grid">
                   {results.map((property) => (

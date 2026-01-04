@@ -6,7 +6,7 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
 
   const handleFavDragStart = (e, favId) => {
     console.log("Started dragging favourite:", favId);
-    e.dataTransfer.setData("text/plain", favId); // Changed to text/plain
+    e.dataTransfer.setData("text/plain", favId);
     e.dataTransfer.effectAllowed = "move";
     setDraggedItemId(favId);
   };
@@ -68,23 +68,19 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
         {favourites.map((fav) => (
           <div 
             key={fav.id} 
-            className="favourite-item" 
+            className={`favourite-item ${draggedItemId === fav.id ? 'dragging' : ''}`}
             draggable="true"
             onDragStart={(e) => handleFavDragStart(e, fav.id)}
             onDragEnd={handleFavDragEnd}
-            style={{
-              opacity: draggedItemId === fav.id ? 0.5 : 1,
-              cursor: 'move'
-            }}
           >
             <img 
               src={fav.images[0] || "https://via.placeholder.com/80x60"} 
               alt={fav.shortDescription}
-              style={{ width: "80px", height: "60px", borderRadius: "6px", objectFit: "cover" }}
+              className="favourite-item-image"
             />
-            <div style={{ flex: 1 }}>
+            <div className="favourite-item-details">
               <strong>£{fav.price.toLocaleString()}</strong>
-              <p style={{ fontSize: "0.9rem", margin: "0.25rem 0 0 0" }}>
+              <p className="favourite-item-description">
                 {fav.shortDescription}
               </p>
             </div>
@@ -100,28 +96,10 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
       </div>
 
       <div 
+        className={`remove-drop-zone ${isDraggingOver ? 'drag-over-remove' : ''}`}
         onDragOver={handleRemoveZoneDragOver}
         onDragLeave={handleRemoveZoneDragLeave}
         onDrop={handleRemoveZoneDrop}
-        style={{
-          minHeight: "100px",
-          border: isDraggingOver ? "4px solid #c82333" : "3px dashed #dc3545",
-          borderRadius: "12px",
-          background: isDraggingOver ? "#ff9999" : "#ffe6e6",
-          padding: "2rem",
-          textAlign: "center",
-          fontWeight: "700",
-          color: "#dc3545",
-          fontSize: "1.3rem",
-          margin: "1.5rem 0",
-          transition: "all 0.3s ease",
-          transform: isDraggingOver ? "scale(1.05)" : "scale(1)",
-          boxShadow: isDraggingOver ? "0 6px 16px rgba(220, 53, 69, 0.4)" : "none",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
       >
         🗑️ DROP HERE TO REMOVE
       </div>
