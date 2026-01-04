@@ -2,25 +2,50 @@ import { useState } from 'react';
 
 function FavouritesList({ favourites = [], onRemove, onClear }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [draggedItemId, setDraggedItemId] = useState(null);
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    setIsDraggingOver(true);
+  const handleFavDragStart = (e, favId) => {
+    console.log("Started dragging favourite:", favId);
+    e.dataTransfer.setData("text/plain", favId); // Changed to text/plain
+    e.dataTransfer.effectAllowed = "move";
+    setDraggedItemId(favId);
   };
 
-  const handleDragLeave = (e) => {
-    setIsDraggingOver(false);
+  const handleFavDragEnd = () => {
+    console.log("Drag ended");
+    setDraggedItemId(null);
   };
 
-  const handleDrop = (e) => {
+  const handleRemoveZoneDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    e.dataTransfer.dropEffect = "move";
+    setIsDraggingOver(true);
+    console.log("Dragging over remove zone");
+  };
+
+  const handleRemoveZoneDragLeave = (e) => {
+    e.preventDefault();
     setIsDraggingOver(false);
-    const propertyId = e.dataTransfer.getData("propertyId");
-    console.log("Dropped property ID:", propertyId); // Debug log
+    console.log("Left remove zone");
+  };
+
+  const handleRemoveZoneDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Dropped on remove zone!");
+    
+    const propertyId = e.dataTransfer.getData("text/plain");
+    console.log("Property ID from drop:", propertyId);
+    
+    setIsDraggingOver(false);
+    setDraggedItemId(null);
+    
     if (propertyId) {
+      console.log("Calling onRemove with:", propertyId);
       onRemove(propertyId);
+    } else {
+      console.log("No property ID found!");
     }
   };
 
@@ -45,13 +70,11 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
             key={fav.id} 
             className="favourite-item" 
             draggable="true"
-            onDragStart={(e) => {
-              console.log("Dragging favourite:", fav.id); // Debug log
-              e.dataTransfer.setData("propertyId", fav.id);
-              e.dataTransfer.effectAllowed = "move";
-            }}
-            onDragEnd={(e) => {
-              console.log("Drag ended"); // Debug log
+            onDragStart={(e) => handleFavDragStart(e, fav.id)}
+            onDragEnd={handleFavDragEnd}
+            style={{
+              opacity: draggedItemId === fav.id ? 0.5 : 1,
+              cursor: 'move'
             }}
           >
             <img 
@@ -77,30 +100,30 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
       </div>
 
       <div 
-        className="remove-drop-zone"
-        style={isDraggingOver ? { 
-          borderColor: "#c82333", 
-          background: "#ffcccc",
-          transform: "scale(1.02)",
-          boxShadow: "0 4px 12px rgba(220, 53, 69, 0.3)"
-        } : {
-          border: "3px dashed #dc3545",
+        onDragOver={handleRemoveZoneDragOver}
+        onDragLeave={handleRemoveZoneDragLeave}
+        onDrop={handleRemoveZoneDrop}
+        style={{
+          minHeight: "100px",
+          border: isDraggingOver ? "4px solid #c82333" : "3px dashed #dc3545",
           borderRadius: "12px",
-          background: "#ffe6e6",
-          padding: "1.5rem",
+          background: isDraggingOver ? "#ff9999" : "#ffe6e6",
+          padding: "2rem",
           textAlign: "center",
-          fontWeight: "600",
+          fontWeight: "700",
           color: "#dc3545",
-          fontSize: "1.1rem",
-          margin: "1rem 0",
+          fontSize: "1.3rem",
+          margin: "1.5rem 0",
           transition: "all 0.3s ease",
-          cursor: "pointer"
+          transform: isDraggingOver ? "scale(1.05)" : "scale(1)",
+          boxShadow: isDraggingOver ? "0 6px 16px rgba(220, 53, 69, 0.4)" : "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
       >
-        🗑️ Drag items here to remove
+        🗑️ DROP HERE TO REMOVE
       </div>
 
       <button onClick={onClear} className="clear-favourites-btn">

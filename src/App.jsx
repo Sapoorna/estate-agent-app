@@ -12,10 +12,14 @@ function App() {
   const [favourites, setFavourites] = useState([]);
 
   function handleSearch(criteria) {
+    console.log("Search criteria:", criteria);
+    
     let filtered = properties.filter((property) => {
-      // Type filter
-      if (criteria.type && criteria.type !== "any" && property.type !== criteria.type) {
-        return false;
+      // Type filter - case insensitive comparison
+      if (criteria.type && criteria.type !== "any") {
+        if (property.type.toLowerCase() !== criteria.type.toLowerCase()) {
+          return false;
+        }
       }
 
       // Price filter
@@ -27,26 +31,33 @@ function App() {
       if (criteria.maxBeds && property.bedrooms > Number(criteria.maxBeds)) return false;
 
       // Postcode filter
-      if (criteria.postcode && !property.postcode.startsWith(criteria.postcode.toUpperCase())) {
-        return false;
+      if (criteria.postcode && criteria.postcode.trim() !== "") {
+        if (!property.postcode.toUpperCase().startsWith(criteria.postcode.toUpperCase().trim())) {
+          return false;
+        }
       }
 
       // Date filter
       if (criteria.startDate) {
         const propertyDate = new Date(property.added);
         const startDate = new Date(criteria.startDate);
+        startDate.setHours(0, 0, 0, 0);
+        propertyDate.setHours(0, 0, 0, 0);
         if (propertyDate < startDate) return false;
       }
 
       if (criteria.endDate) {
         const propertyDate = new Date(property.added);
         const endDate = new Date(criteria.endDate);
+        endDate.setHours(23, 59, 59, 999);
+        propertyDate.setHours(0, 0, 0, 0);
         if (propertyDate > endDate) return false;
       }
 
       return true;
     });
 
+    console.log("Filtered results:", filtered.length);
     setResults(filtered);
   }
 
@@ -61,9 +72,7 @@ function App() {
   }
 
   function clearFavourites() {
-    if (window.confirm("Clear all favourites?")) {
-      setFavourites([]);
-    }
+    setFavourites([]);
   }
 
   // Handle drop on favourites container
