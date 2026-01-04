@@ -5,9 +5,8 @@ function FavouritesList({ favourites, onRemove, onClear }) {
 
   // Drag handlers for items in favourites list
   const handleItemDragStart = (e, propertyId) => {
-    e.dataTransfer.setData("text/plain", `remove:${propertyId}`);
+    e.dataTransfer.setData("propertyId", propertyId); // Changed key
     e.dataTransfer.effectAllowed = "move";
-    console.log("Started dragging item:", propertyId);
   };
 
   // Handlers for the REMOVE drop zone
@@ -28,13 +27,10 @@ function FavouritesList({ favourites, onRemove, onClear }) {
     e.stopPropagation();
     setIsDraggingOver(false);
     
-    const data = e.dataTransfer.getData("text/plain");
-    console.log("Dropped data:", data);
+    const propertyId = e.dataTransfer.getData("propertyId"); // Changed key
     
-    if (data.startsWith("remove:")) {
-      const propertyId = data.replace("remove:", "");
-      console.log("Removing property:", propertyId);
-      onRemove(propertyId);
+    if (propertyId) {
+      onRemove(propertyId); // This should now work!
     }
   };
 

@@ -73,15 +73,10 @@ function App() {
     const exists = favourites.find((fav) => fav.id === property.id);
     if (!exists) {
       setFavourites([...favourites, property]);
-      alert(`Added "${property.shortDescription}" to favourites!`);
-    } else {
-      alert("This property is already in your favourites!");
-    }
   }
 
   function removeFromFavourites(id) {
     setFavourites(favourites.filter((fav) => fav.id !== id));
-    alert("Property removed from favourites!");
   }
 
   function clearFavourites() {
