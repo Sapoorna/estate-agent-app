@@ -13,10 +13,13 @@ function App() {
 
   function handleSearch(criteria) {
     let filtered = properties.filter((property) => {
-      if (criteria.type && criteria.type !== "any" && property.type !== criteria.type) {
-        return false;
+      if (criteria.type && criteria.type !== "any") {
+        if (property.type.toLowerCase() !== criteria.type.toLowerCase()) {
+          return false;
+        }
       }
 
+      // Price filters
       if (criteria.minPrice && property.price < criteria.minPrice) {
         return false;
       }
@@ -25,6 +28,7 @@ function App() {
         return false;
       }
 
+      // Bedroom filters
       if (criteria.minBeds && property.bedrooms < criteria.minBeds) {
         return false;
       }
@@ -33,21 +37,30 @@ function App() {
         return false;
       }
 
-      if (criteria.postcode && !property.postcode.startsWith(criteria.postcode)) {
-        return false;
+      // Postcode filter - case insensitive
+      if (criteria.postcode && criteria.postcode.trim() !== "") {
+        if (
+          !property.postcode
+            .toLowerCase()
+            .startsWith(criteria.postcode.toLowerCase().trim())
+        ) {
+          return false;
+        }
       }
 
       // Date filtering
-      const propertyDate = new Date(property.added);
-      
-      if (criteria.startDate) {
-        const startDate = new Date(criteria.startDate);
-        if (propertyDate < startDate) return false;
-      }
-      
-      if (criteria.endDate) {
-        const endDate = new Date(criteria.endDate);
-        if (propertyDate > endDate) return false;
+      if (criteria.startDate || criteria.endDate) {
+        const propertyDate = new Date(property.added);
+
+        if (criteria.startDate) {
+          const startDate = new Date(criteria.startDate);
+          if (propertyDate < startDate) return false;
+        }
+
+        if (criteria.endDate) {
+          const endDate = new Date(criteria.endDate);
+          if (propertyDate > endDate) return false;
+        }
       }
 
       return true;
@@ -80,14 +93,14 @@ function App() {
   function handleDrop(e) {
     e.preventDefault();
     const data = e.dataTransfer.getData("text/plain");
-    
+
     // Check if we're removing from favourites
     if (data.startsWith("remove:")) {
       const propertyId = data.replace("remove:", "");
       removeFromFavourites(propertyId);
     } else {
       // Adding to favourites
-      const property = properties.find(p => p.id === data);
+      const property = properties.find((p) => p.id === data);
       if (property) {
         addToFavourites(property);
       }
@@ -112,11 +125,8 @@ function App() {
           <div className="search-container">
             <div className="left-panel">
               <SearchForm onSearch={handleSearch} />
-              
-              <div 
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-              >
+
+              <div onDragOver={handleDragOver} onDrop={handleDrop}>
                 <FavouritesList
                   favourites={favourites}
                   onRemove={removeFromFavourites}
@@ -127,29 +137,26 @@ function App() {
 
             <div className="right-panel">
               <h2>Search Results ({results.length} properties)</h2>
-              
+
               {/* ADD drop zone around results */}
-              <div
-              onDragOver = {handleDragOver}
-              onDrop = {handleDrop}
-              >
+              <div onDragOver={handleDragOver} onDrop={handleDrop}>
                 {results.length === 0 ? (
                   <div className="no-results">
                     <p>No properties found matching your criteria.</p>
                     <p>Try adjusting your search filters.</p>
                   </div>
-              ) : (
+                ) : (
                   <div className="results-grid">
                     {results.map((property) => (
                       <PropertyCard
-                      key={property.id}
-                      property={property}
-                      onSelect={setSelectedProperty}
-                      onDragAdd={addToFavourites}
-                    />
-                  ))}
-                </div>
-              )}
+                        key={property.id}
+                        property={property}
+                        onSelect={setSelectedProperty}
+                        onDragAdd={addToFavourites}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

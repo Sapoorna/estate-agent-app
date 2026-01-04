@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { DropdownList, NumberPicker, DateTimePicker } from 'react-widgets';
-import 'react-widgets/styles.css';
+import { DropdownList, NumberPicker, DateTimePicker } from "react-widgets";
+import "react-widgets/styles.css";
 
 function SearchForm({ onSearch }) {
   const [formData, setFormData] = useState({
@@ -11,18 +11,24 @@ function SearchForm({ onSearch }) {
     minBeds: null,
     maxBeds: null,
     startDate: null,
-    endDate: null
+    endDate: null,
   });
 
   const propertyTypes = [
     { value: "any", label: "Any Type" },
     { value: "house", label: "House" },
     { value: "flat", label: "Flat" },
-    { value: "bungalow", label: "Bungalow" }
+    { value: "bungalow", label: "Bungalow" },
   ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Ensure type is a string value, not an object
+    const searchCriteria = {
+      ...formData,
+      type:
+        typeof formData.type === "object" ? formData.type.value : formData.type,
+    };
     onSearch(formData);
   };
 
@@ -35,7 +41,7 @@ function SearchForm({ onSearch }) {
       minBeds: null,
       maxBeds: null,
       startDate: null,
-      endDate: null
+      endDate: null,
     });
     onSearch({});
   };
@@ -43,15 +49,15 @@ function SearchForm({ onSearch }) {
   return (
     <form className="search-form" onSubmit={handleSubmit}>
       <h2>🔍 Search Properties</h2>
-      
+
       <div className="form-group">
         <label>Property Type</label>
         <DropdownList
           data={propertyTypes}
           dataKey="value"
           textField="label"
-          value={formData.type}
-          onChange={(value) => setFormData({...formData, type: value})}
+          value={propertyTypes.find(pt => pt.value === formData.type) || propertyTypes[0]}
+          onChange={(item) => setFormData({ ...formData, type: item.value })}
           className="styled-select"
           placeholder="Select type..."
         />
@@ -59,12 +65,14 @@ function SearchForm({ onSearch }) {
 
       <div className="form-group">
         <label>Postcode Area</label>
-        <input 
-          type="text" 
+        <input
+          type="text"
           className="styled-input"
           placeholder="e.g., BR1"
           value={formData.postcode}
-          onChange={(e) => setFormData({...formData, postcode: e.target.value})}
+          onChange={(e) =>
+            setFormData({ ...formData, postcode: e.target.value })
+          }
         />
       </div>
 
@@ -73,7 +81,7 @@ function SearchForm({ onSearch }) {
           <label>Min Price (£)</label>
           <NumberPicker
             value={formData.minPrice}
-            onChange={(value) => setFormData({...formData, minPrice: value})}
+            onChange={(value) => setFormData({ ...formData, minPrice: value })}
             placeholder="Any"
             className="styled-input"
             min={0}
@@ -83,7 +91,7 @@ function SearchForm({ onSearch }) {
           <label>Max Price (£)</label>
           <NumberPicker
             value={formData.maxPrice}
-            onChange={(value) => setFormData({...formData, maxPrice: value})}
+            onChange={(value) => setFormData({ ...formData, maxPrice: value })}
             placeholder="Any"
             className="styled-input"
             min={0}
@@ -96,7 +104,7 @@ function SearchForm({ onSearch }) {
           <label>Min Beds</label>
           <NumberPicker
             value={formData.minBeds}
-            onChange={(value) => setFormData({...formData, minBeds: value})}
+            onChange={(value) => setFormData({ ...formData, minBeds: value })}
             placeholder="Any"
             className="styled-input"
             min={0}
@@ -107,7 +115,7 @@ function SearchForm({ onSearch }) {
           <label>Max Beds</label>
           <NumberPicker
             value={formData.maxBeds}
-            onChange={(value) => setFormData({...formData, maxBeds: value})}
+            onChange={(value) => setFormData({ ...formData, maxBeds: value })}
             placeholder="Any"
             className="styled-input"
             min={0}
@@ -121,7 +129,7 @@ function SearchForm({ onSearch }) {
           <label>From Date</label>
           <DateTimePicker
             value={formData.startDate}
-            onChange={(value) => setFormData({...formData, startDate: value})}
+            onChange={(value) => setFormData({ ...formData, startDate: value })}
             placeholder="Select start date"
             className="styled-input"
             date
@@ -131,7 +139,7 @@ function SearchForm({ onSearch }) {
           <label>To Date</label>
           <DateTimePicker
             value={formData.endDate}
-            onChange={(value) => setFormData({...formData, endDate: value})}
+            onChange={(value) => setFormData({ ...formData, endDate: value })}
             placeholder="Select end date"
             className="styled-input"
             date
@@ -140,8 +148,12 @@ function SearchForm({ onSearch }) {
       </div>
 
       <div className="form-buttons">
-        <button type="submit" className="btn-primary">Search Properties</button>
-        <button type="button" className="btn-secondary" onClick={handleReset}>Reset Filters</button>
+        <button type="submit" className="btn-primary">
+          Search Properties
+        </button>
+        <button type="button" className="btn-secondary" onClick={handleReset}>
+          Reset Filters
+        </button>
       </div>
     </form>
   );
