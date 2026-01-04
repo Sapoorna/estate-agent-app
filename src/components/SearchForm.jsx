@@ -23,13 +23,12 @@ function SearchForm({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ensure type is a string value, not an object
+    // FIXED: Send searchCriteria, not formData
     const searchCriteria = {
       ...formData,
-      type:
-        typeof formData.type === "object" ? formData.type.value : formData.type,
+      type: typeof formData.type === "object" ? formData.type.value : formData.type,
     };
-    onSearch(formData);
+    onSearch(searchCriteria); // CHANGED: was onSearch(formData)
   };
 
   const handleReset = () => {
