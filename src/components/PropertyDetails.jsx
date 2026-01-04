@@ -72,20 +72,30 @@ function PropertyDetails({ property, onBack, onAddFavourite }) {
         <TabPanel>
           <h3>Map & Location</h3>
           <div className="map-container">
+            {/* Google Maps Embed - Required by coursework */}
             <iframe
-              title="Property location"
+              title="Property location map"
               width="100%"
               height="400"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1%2C51.5%2C0.1%2C51.52&layer=mapnik&marker=51.51,-0.1"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                property.location
+              )}&z=14&output=embed`}
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
+            <p className="map-note">
+              <small>
+                Google Maps embed required by coursework. If map doesn't
+                display, check network settings or CSP permissions.
+              </small>
+            </p>
           </div>
           <p className="location-info">
-            <strong>Location:</strong> {property.location}
+            <strong>📍 Location:</strong> {property.location}
             <br />
-            <strong>Postcode Area:</strong> {property.postcode}
+            <strong>📮 Postcode:</strong> {property.postcode}
           </p>
         </TabPanel>
       </Tabs>
