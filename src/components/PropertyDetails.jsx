@@ -76,7 +76,7 @@ function PropertyDetails({ property, onBack, onAddFavourite }) {
               title="Property location"
               width="100%"
               height="400"
-              src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=51.3890,0.0836&zoom=13&maptype=roadmap`}
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1%2C51.5%2C0.1%2C51.52&layer=mapnik&marker=51.51,-0.1"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"

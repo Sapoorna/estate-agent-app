@@ -9,12 +9,13 @@
     
     <!-- Content Security Policy (CSP) for security -->
     <meta http-equiv="Content-Security-Policy" 
-          content="default-src 'self';
-                   script-src 'self' 'unsafe-inline' 'unsafe-eval';
-                   style-src 'self' 'unsafe-inline';
-                   img-src 'self' data: https: http:;
-                   font-src 'self' data:;
-                   connect-src 'self';">
+      content="default-src 'self';
+               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com;
+               style-src 'self' 'unsafe-inline';
+               img-src 'self' data: https: http:;
+               font-src 'self' data:;
+               connect-src 'self';
+               frame-src 'self' https://www.google.com https://maps.google.com https://www.google.com/maps;">
     
     <!-- Additional security headers -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
