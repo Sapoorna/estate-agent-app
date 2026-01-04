@@ -1,5 +1,4 @@
 function PropertyCard({ property, onSelect, onDragAdd }) {
-  
   const handleDragStart = (e) => {
     e.dataTransfer.setData("text/plain", property.id);
     e.dataTransfer.effectAllowed = "move";
@@ -25,8 +24,10 @@ function PropertyCard({ property, onSelect, onDragAdd }) {
         src={property.images[0] || "https://via.placeholder.com/400x300"}
         alt={property.shortDescription}
         className="property-image"
+        // Change the onError function
         onError={(e) => {
-          e.target.src = "https://via.placeholder.com/400x300";
+          e.target.src =
+            "https://placehold.co/400x300/1a73e8/ffffff?text=Property+Image";
         }}
       />
 
@@ -38,15 +39,15 @@ function PropertyCard({ property, onSelect, onDragAdd }) {
         </p>
         <p className="property-location">{property.location}</p>
         <p className="property-date">Added: {property.added}</p>
-        
-        <button 
+
+        <button
           className="favourite-btn"
           onClick={handleFavouriteClick}
           aria-label="Add to favourites"
         >
           ❤️ Add to Favourites
         </button>
-        
+
         <p className="drag-hint">👆 Drag me to favourites</p>
       </div>
     </div>
