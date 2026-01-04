@@ -20,7 +20,7 @@ function ImageGallery({ images }) {
           className="main-image"
           onError={(e) => {
             e.target.src =
-              "https://placehold.co/800x500/1a73e8/ffffff?text=Property+View";
+              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231a73e8'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='16' fill='white' text-anchor='middle'%3EProperty Image%3C/text%3E%3C/svg%3E";
           }}
         />
       </div>
@@ -37,7 +37,7 @@ function ImageGallery({ images }) {
               alt={`Thumbnail ${index + 1}`}
               onError={(e) => {
                 e.target.src =
-                  "https://placehold.co/800x500/1a73e8/ffffff?text=Property+View";
+                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%231a73e8'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='16' fill='white' text-anchor='middle'%3EProperty Image%3C/text%3E%3C/svg%3E";
               }}
             />
           </div>
