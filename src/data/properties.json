@@ -110,12 +110,12 @@
     "location": "Croydon, CR0",
     "postcode": "CR0",
     "images": [
-      "/images/properties/flat3/1.jpg",
-      "/images/properties/flat3/2.jpg",
-      "/images/properties/flat3/3.jpg",
-      "/images/properties/flat3/4.jpg",
-      "/images/properties/flat3/5.jpg",
-      "/images/properties/flat3/6.jpg"
+      "images/properties/flat3/1.jpg",
+      "images/properties/flat3/2.jpg",
+      "images/properties/flat3/3.jpg",
+      "images/properties/flat3/4.jpg",
+      "images/properties/flat3/5.jpg",
+      "images/properties/flat3/6.jpg"
     ],
     "added": "2022-07-25"
   },
