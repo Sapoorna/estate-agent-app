@@ -73,6 +73,7 @@ function App() {
     const exists = favourites.find((fav) => fav.id === property.id);
     if (!exists) {
       setFavourites([...favourites, property]);
+    }
   }
 
   function removeFromFavourites(id) {
