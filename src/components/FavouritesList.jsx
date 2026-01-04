@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function FavouritesList({ favourites, onRemove, onClear }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
-  // Drag handlers for removing items by dragging OUT
-  const handleDragStart = (e, propertyId) => {
+  // Drag handlers for items in favourites list
+  const handleItemDragStart = (e, propertyId) => {
     e.dataTransfer.setData("text/plain", `remove:${propertyId}`);
     e.dataTransfer.effectAllowed = "move";
+    console.log("Started dragging item:", propertyId);
   };
 
-  // Handlers for the remove drop zone
+  // Handlers for the REMOVE drop zone
   const handleRemoveZoneDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    e.dataTransfer.dropEffect = "move";
     setIsDraggingOver(true);
   };
 
@@ -27,8 +29,11 @@ function FavouritesList({ favourites, onRemove, onClear }) {
     setIsDraggingOver(false);
     
     const data = e.dataTransfer.getData("text/plain");
+    console.log("Dropped data:", data);
+    
     if (data.startsWith("remove:")) {
       const propertyId = data.replace("remove:", "");
+      console.log("Removing property:", propertyId);
       onRemove(propertyId);
     }
   };
@@ -53,8 +58,8 @@ function FavouritesList({ favourites, onRemove, onClear }) {
           <div 
             key={fav.id} 
             className="favourite-item"
-            draggable
-            onDragStart={(e) => handleDragStart(e, fav.id)}
+            draggable="true"
+            onDragStart={(e) => handleItemDragStart(e, fav.id)}
           >
             <img 
               src={fav.images[0] || "https://via.placeholder.com/80x60"} 
@@ -63,10 +68,10 @@ function FavouritesList({ favourites, onRemove, onClear }) {
                 e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Crect width='80' height='60' fill='%231a73e8'/%3E%3Ctext x='40' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'%3EImage%3C/text%3E%3C/svg%3E";
               }}
             />
-            <div>
+            <div style={{ flex: 1 }}>
               <strong>£{fav.price.toLocaleString()}</strong>
-              <p>{fav.shortDescription}</p>
-              <p>{fav.location}</p>
+              <p style={{ fontSize: '0.9rem', margin: '0.25rem 0' }}>{fav.shortDescription}</p>
+              <p style={{ fontSize: '0.85rem', color: '#666' }}>{fav.location}</p>
             </div>
             <button 
               onClick={() => onRemove(fav.id)} 

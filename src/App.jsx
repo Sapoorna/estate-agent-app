@@ -12,7 +12,10 @@ function App() {
   const [favourites, setFavourites] = useState([]);
 
   function handleSearch(criteria) {
+    console.log("Search criteria:", criteria); // Debug log
+    
     let filtered = properties.filter((property) => {
+      // Type filter - case insensitive comparison
       if (criteria.type && criteria.type !== "any") {
         if (property.type.toLowerCase() !== criteria.type.toLowerCase()) {
           return false;
@@ -39,11 +42,7 @@ function App() {
 
       // Postcode filter - case insensitive
       if (criteria.postcode && criteria.postcode.trim() !== "") {
-        if (
-          !property.postcode
-            .toLowerCase()
-            .startsWith(criteria.postcode.toLowerCase().trim())
-        ) {
+        if (!property.postcode.toLowerCase().startsWith(criteria.postcode.toLowerCase().trim())) {
           return false;
         }
       }
@@ -66,6 +65,7 @@ function App() {
       return true;
     });
 
+    console.log("Filtered results:", filtered.length); // Debug log
     setResults(filtered);
   }
 
@@ -74,38 +74,39 @@ function App() {
     if (!exists) {
       setFavourites([...favourites, property]);
       alert(`Added "${property.shortDescription}" to favourites!`);
+    } else {
+      alert("This property is already in your favourites!");
     }
   }
 
   function removeFromFavourites(id) {
     setFavourites(favourites.filter((fav) => fav.id !== id));
+    alert("Property removed from favourites!");
   }
 
   function clearFavourites() {
-    setFavourites([]);
+    if (window.confirm("Are you sure you want to clear all favourites?")) {
+      setFavourites([]);
+    }
   }
 
-  // Updated drag and drop handler
-  function handleDragOver(e) {
+  // Drag handler for favourites drop zone
+  function handleFavouritesDragOver(e) {
     e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
   }
 
-  function handleDrop(e) {
+  function handleFavouritesDrop(e) {
     e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
-
-    // Check if we're removing from favourites
-    if (data.startsWith("remove:")) {
-      const propertyId = data.replace("remove:", "");
-      removeFromFavourites(propertyId);
-    } else {
-      // Adding to favourites
-      const property = properties.find((p) => p.id === data);
+    const propertyId = e.dataTransfer.getData("text/plain");
+    
+    // Only add if it's NOT a remove action
+    if (!propertyId.startsWith("remove:")) {
+      const property = properties.find((p) => p.id === propertyId);
       if (property) {
         addToFavourites(property);
       }
     }
-    // If it starts with "remove:", it's handled by FavouritesList component
   }
 
   return (
@@ -126,7 +127,10 @@ function App() {
             <div className="left-panel">
               <SearchForm onSearch={handleSearch} />
 
-              <div onDragOver={handleDragOver} onDrop={handleDrop}>
+              <div 
+                onDragOver={handleFavouritesDragOver} 
+                onDrop={handleFavouritesDrop}
+              >
                 <FavouritesList
                   favourites={favourites}
                   onRemove={removeFromFavourites}
@@ -138,26 +142,23 @@ function App() {
             <div className="right-panel">
               <h2>Search Results ({results.length} properties)</h2>
 
-              {/* ADD drop zone around results */}
-              <div onDragOver={handleDragOver} onDrop={handleDrop}>
-                {results.length === 0 ? (
-                  <div className="no-results">
-                    <p>No properties found matching your criteria.</p>
-                    <p>Try adjusting your search filters.</p>
-                  </div>
-                ) : (
-                  <div className="results-grid">
-                    {results.map((property) => (
-                      <PropertyCard
-                        key={property.id}
-                        property={property}
-                        onSelect={setSelectedProperty}
-                        onDragAdd={addToFavourites}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+              {results.length === 0 ? (
+                <div className="no-results">
+                  <p>No properties found matching your criteria.</p>
+                  <p>Try adjusting your search filters.</p>
+                </div>
+              ) : (
+                <div className="results-grid">
+                  {results.map((property) => (
+                    <PropertyCard
+                      key={property.id}
+                      property={property}
+                      onSelect={setSelectedProperty}
+                      onDragAdd={addToFavourites}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

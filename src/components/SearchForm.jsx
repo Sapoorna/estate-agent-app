@@ -23,16 +23,25 @@ function SearchForm({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // FIXED: Send searchCriteria, not formData
+    
+    // Create clean search criteria
     const searchCriteria = {
-      ...formData,
-      type: typeof formData.type === "object" ? formData.type.value : formData.type,
+      type: formData.type,
+      postcode: formData.postcode,
+      minPrice: formData.minPrice,
+      maxPrice: formData.maxPrice,
+      minBeds: formData.minBeds,
+      maxBeds: formData.maxBeds,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
     };
-    onSearch(searchCriteria); // CHANGED: was onSearch(formData)
+    
+    console.log("Submitting search:", searchCriteria);
+    onSearch(searchCriteria);
   };
 
   const handleReset = () => {
-    setFormData({
+    const resetData = {
       type: "any",
       postcode: "",
       minPrice: null,
@@ -41,8 +50,9 @@ function SearchForm({ onSearch }) {
       maxBeds: null,
       startDate: null,
       endDate: null,
-    });
-    onSearch({});
+    };
+    setFormData(resetData);
+    onSearch(resetData);
   };
 
   return (
@@ -55,8 +65,11 @@ function SearchForm({ onSearch }) {
           data={propertyTypes}
           dataKey="value"
           textField="label"
-          value={propertyTypes.find(pt => pt.value === formData.type) || propertyTypes[0]}
-          onChange={(item) => setFormData({ ...formData, type: item.value })}
+          value={formData.type}
+          onChange={(value) => {
+            console.log("Type changed:", value);
+            setFormData({ ...formData, type: value });
+          }}
           className="styled-select"
           placeholder="Select type..."
         />
@@ -67,7 +80,7 @@ function SearchForm({ onSearch }) {
         <input
           type="text"
           className="styled-input"
-          placeholder="e.g., BR1"
+          placeholder="e.g., BR1, NW1, KT1"
           value={formData.postcode}
           onChange={(e) =>
             setFormData({ ...formData, postcode: e.target.value })
@@ -84,6 +97,7 @@ function SearchForm({ onSearch }) {
             placeholder="Any"
             className="styled-input"
             min={0}
+            step={10000}
           />
         </div>
         <div className="form-group">
@@ -94,6 +108,7 @@ function SearchForm({ onSearch }) {
             placeholder="Any"
             className="styled-input"
             min={0}
+            step={10000}
           />
         </div>
       </div>
@@ -131,7 +146,7 @@ function SearchForm({ onSearch }) {
             onChange={(value) => setFormData({ ...formData, startDate: value })}
             placeholder="Select start date"
             className="styled-input"
-            date
+            includeTime={false}
           />
         </div>
         <div className="form-group">
@@ -141,7 +156,7 @@ function SearchForm({ onSearch }) {
             onChange={(value) => setFormData({ ...formData, endDate: value })}
             placeholder="Select end date"
             className="styled-input"
-            date
+            includeTime={false}
           />
         </div>
       </div>
