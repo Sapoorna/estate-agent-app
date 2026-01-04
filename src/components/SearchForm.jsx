@@ -14,8 +14,6 @@ function SearchForm({ onSearch }) {
     endDate: null,
   });
 
-  const propertyTypes = ["any", "House", "Flat", "Bungalow"];
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(formData);
@@ -42,11 +40,16 @@ function SearchForm({ onSearch }) {
 
       <div className="form-group">
         <label>Property Type</label>
-        <DropdownList
-          data={propertyTypes}
+        <select
+          className="styled-input"
           value={formData.type}
-          onChange={(value) => setFormData({ ...formData, type: value })}
-        />
+          onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+        >
+          <option value="any">Any Type</option>
+          <option value="House">House</option>
+          <option value="Flat">Flat</option>
+          <option value="Bungalow">Bungalow</option>
+        </select>
       </div>
 
       <div className="form-group">
