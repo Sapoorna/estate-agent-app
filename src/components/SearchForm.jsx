@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { NumberPicker, DateTimePicker } from "react-widgets";
+import { DropdownList, NumberPicker, DateTimePicker } from "react-widgets";
+import "react-widgets/styles.css";
 
 function SearchForm({ onSearch }) {
   const [formData, setFormData] = useState({
@@ -13,13 +14,15 @@ function SearchForm({ onSearch }) {
     endDate: null,
   });
 
+  const propertyTypes = ["any", "House", "Flat", "Bungalow"];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(formData);
   };
 
   const handleReset = () => {
-    setFormData({
+    const resetData = {
       type: "any",
       postcode: "",
       minPrice: null,
@@ -28,8 +31,9 @@ function SearchForm({ onSearch }) {
       maxBeds: null,
       startDate: null,
       endDate: null,
-    });
-    onSearch({});
+    };
+    setFormData(resetData);
+    onSearch(resetData);
   };
 
   return (
@@ -38,16 +42,11 @@ function SearchForm({ onSearch }) {
 
       <div className="form-group">
         <label>Property Type</label>
-        <select
-          className="styled-input"
+        <DropdownList
+          data={propertyTypes}
           value={formData.type}
-          onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-        >
-          <option value="any">Any Type</option>
-          <option value="House">House</option>
-          <option value="Flat">Flat</option>
-          <option value="Bungalow">Bungalow</option>
-        </select>
+          onChange={(value) => setFormData({ ...formData, type: value })}
+        />
       </div>
 
       <div className="form-group">
@@ -55,9 +54,11 @@ function SearchForm({ onSearch }) {
         <input
           type="text"
           className="styled-input"
-          placeholder="e.g., BR1"
+          placeholder="e.g., BR1, NW1, KT1"
           value={formData.postcode}
-          onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, postcode: e.target.value })
+          }
         />
       </div>
 
@@ -69,6 +70,7 @@ function SearchForm({ onSearch }) {
             onChange={(value) => setFormData({ ...formData, minPrice: value })}
             placeholder="Any"
             min={0}
+            step={10000}
           />
         </div>
         <div className="form-group">
@@ -78,6 +80,7 @@ function SearchForm({ onSearch }) {
             onChange={(value) => setFormData({ ...formData, maxPrice: value })}
             placeholder="Any"
             min={0}
+            step={10000}
           />
         </div>
       </div>
@@ -111,7 +114,8 @@ function SearchForm({ onSearch }) {
           <DateTimePicker
             value={formData.startDate}
             onChange={(value) => setFormData({ ...formData, startDate: value })}
-            placeholder="Any date"
+            placeholder="Select start date"
+            includeTime={false}
           />
         </div>
         <div className="form-group">
@@ -119,21 +123,22 @@ function SearchForm({ onSearch }) {
           <DateTimePicker
             value={formData.endDate}
             onChange={(value) => setFormData({ ...formData, endDate: value })}
-            placeholder="Any date"
+            placeholder="Select end date"
+            includeTime={false}
           />
         </div>
       </div>
 
       <div className="form-buttons">
         <button type="submit" className="btn-primary">
-          Search
+          Search Properties
         </button>
         <button type="button" className="btn-secondary" onClick={handleReset}>
-          Reset
+          Reset Filters
         </button>
       </div>
     </form>
   );
 }
-
+g
 export default SearchForm;
