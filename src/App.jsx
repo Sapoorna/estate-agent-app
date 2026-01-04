@@ -12,12 +12,10 @@ function App() {
   const [favourites, setFavourites] = useState([]);
 
   function handleSearch(criteria) {
-    console.log("Search criteria:", criteria); // Debug log
-    
     let filtered = properties.filter((property) => {
-      // Type filter - case insensitive comparison
+      // Type filter
       if (criteria.type && criteria.type !== "any") {
-        if (property.type.toLowerCase() !== criteria.type.toLowerCase()) {
+        if (property.type !== criteria.type) {
           return false;
         }
       }
@@ -40,9 +38,9 @@ function App() {
         return false;
       }
 
-      // Postcode filter - case insensitive
+      // Postcode filter
       if (criteria.postcode && criteria.postcode.trim() !== "") {
-        if (!property.postcode.toLowerCase().startsWith(criteria.postcode.toLowerCase().trim())) {
+        if (!property.postcode.toUpperCase().startsWith(criteria.postcode.toUpperCase().trim())) {
           return false;
         }
       }
@@ -53,11 +51,13 @@ function App() {
 
         if (criteria.startDate) {
           const startDate = new Date(criteria.startDate);
+          startDate.setHours(0, 0, 0, 0);
           if (propertyDate < startDate) return false;
         }
 
         if (criteria.endDate) {
           const endDate = new Date(criteria.endDate);
+          endDate.setHours(23, 59, 59, 999);
           if (propertyDate > endDate) return false;
         }
       }
@@ -65,7 +65,6 @@ function App() {
       return true;
     });
 
-    console.log("Filtered results:", filtered.length); // Debug log
     setResults(filtered);
   }
 
@@ -86,7 +85,6 @@ function App() {
     }
   }
 
-  // Drag handler for favourites drop zone
   function handleFavouritesDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
@@ -96,7 +94,6 @@ function App() {
     e.preventDefault();
     const propertyId = e.dataTransfer.getData("text/plain");
     
-    // Only add if it's NOT a remove action
     if (!propertyId.startsWith("remove:")) {
       const property = properties.find((p) => p.id === propertyId);
       if (property) {

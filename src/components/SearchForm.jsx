@@ -14,30 +14,11 @@ function SearchForm({ onSearch }) {
     endDate: null,
   });
 
-  const propertyTypes = [
-    { value: "any", label: "Any Type" },
-    { value: "house", label: "House" },
-    { value: "flat", label: "Flat" },
-    { value: "bungalow", label: "Bungalow" },
-  ];
+  const propertyTypes = ["any", "House", "Flat", "Bungalow"];
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Create clean search criteria
-    const searchCriteria = {
-      type: formData.type,
-      postcode: formData.postcode,
-      minPrice: formData.minPrice,
-      maxPrice: formData.maxPrice,
-      minBeds: formData.minBeds,
-      maxBeds: formData.maxBeds,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-    };
-    
-    console.log("Submitting search:", searchCriteria);
-    onSearch(searchCriteria);
+    onSearch(formData);
   };
 
   const handleReset = () => {
@@ -63,15 +44,8 @@ function SearchForm({ onSearch }) {
         <label>Property Type</label>
         <DropdownList
           data={propertyTypes}
-          dataKey="value"
-          textField="label"
           value={formData.type}
-          onChange={(value) => {
-            console.log("Type changed:", value);
-            setFormData({ ...formData, type: value });
-          }}
-          className="styled-select"
-          placeholder="Select type..."
+          onChange={(value) => setFormData({ ...formData, type: value })}
         />
       </div>
 
@@ -95,7 +69,6 @@ function SearchForm({ onSearch }) {
             value={formData.minPrice}
             onChange={(value) => setFormData({ ...formData, minPrice: value })}
             placeholder="Any"
-            className="styled-input"
             min={0}
             step={10000}
           />
@@ -106,7 +79,6 @@ function SearchForm({ onSearch }) {
             value={formData.maxPrice}
             onChange={(value) => setFormData({ ...formData, maxPrice: value })}
             placeholder="Any"
-            className="styled-input"
             min={0}
             step={10000}
           />
@@ -120,7 +92,6 @@ function SearchForm({ onSearch }) {
             value={formData.minBeds}
             onChange={(value) => setFormData({ ...formData, minBeds: value })}
             placeholder="Any"
-            className="styled-input"
             min={0}
             max={10}
           />
@@ -131,7 +102,6 @@ function SearchForm({ onSearch }) {
             value={formData.maxBeds}
             onChange={(value) => setFormData({ ...formData, maxBeds: value })}
             placeholder="Any"
-            className="styled-input"
             min={0}
             max={10}
           />
@@ -145,7 +115,6 @@ function SearchForm({ onSearch }) {
             value={formData.startDate}
             onChange={(value) => setFormData({ ...formData, startDate: value })}
             placeholder="Select start date"
-            className="styled-input"
             includeTime={false}
           />
         </div>
@@ -155,7 +124,6 @@ function SearchForm({ onSearch }) {
             value={formData.endDate}
             onChange={(value) => setFormData({ ...formData, endDate: value })}
             placeholder="Select end date"
-            className="styled-input"
             includeTime={false}
           />
         </div>
