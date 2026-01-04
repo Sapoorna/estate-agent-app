@@ -81,10 +81,13 @@ function App() {
     e.preventDefault();
     const data = e.dataTransfer.getData("text/plain");
     
-    // Check if it's a regular property ID (adding)
-    if (!data.startsWith("remove:")) {
-      const propertyId = data;
-      const property = properties.find(p => p.id === propertyId);
+    // Check if we're removing from favourites
+    if (data.startsWith("remove:")) {
+      const propertyId = data.replace("remove:", "");
+      removeFromFavourites(propertyId);
+    } else {
+      // Adding to favourites
+      const property = properties.find(p => p.id === data);
       if (property) {
         addToFavourites(property);
       }
@@ -125,15 +128,20 @@ function App() {
             <div className="right-panel">
               <h2>Search Results ({results.length} properties)</h2>
               
-              {results.length === 0 ? (
-                <div className="no-results">
-                  <p>No properties found matching your criteria.</p>
-                  <p>Try adjusting your search filters.</p>
-                </div>
+              {/* ADD drop zone around results */}
+              <div
+              onDragOver = {handleDragOver}
+              onDrop = {handleDrop}
+              >
+                {results.length === 0 ? (
+                  <div className="no-results">
+                    <p>No properties found matching your criteria.</p>
+                    <p>Try adjusting your search filters.</p>
+                  </div>
               ) : (
-                <div className="results-grid">
-                  {results.map((property) => (
-                    <PropertyCard
+                  <div className="results-grid">
+                    {results.map((property) => (
+                      <PropertyCard
                       key={property.id}
                       property={property}
                       onSelect={setSelectedProperty}
@@ -142,6 +150,7 @@ function App() {
                   ))}
                 </div>
               )}
+              </div>
             </div>
           </div>
         )}
