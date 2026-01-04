@@ -59,7 +59,7 @@ function PropertyDetails({ property, onBack, onAddFavourite }) {
         <TabPanel>
           <h3>Floor Plan</h3>
           <img
-            src="https://via.placeholder.com/600x400/1a73e8/ffffff?text=Floor+Plan"
+            src="./images/properties/house1/floorplan.jpg"
             alt="Floor plan"
             className="floor-plan"
           />
