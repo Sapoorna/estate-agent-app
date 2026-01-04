@@ -9,6 +9,7 @@
     "longDescription": "Beautiful three bedroom semi-detached family home with modern kitchen, spacious living room, and private garden. Located close to Petts Wood station with fast trains to London.",
     "location": "Petts Wood Road, BR5",
     "postcode": "BR5",
+    "floorPlan": "./images/floorplans/floorplan1.jpg",
     "images": [
       "./images/properties/house1/1.jpg",
       "./images/properties/house1/2.jpg",

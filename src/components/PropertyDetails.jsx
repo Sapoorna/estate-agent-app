@@ -5,6 +5,7 @@ import ImageGallery from "./ImageGallery";
 function PropertyDetails({ property, onBack, onAddFavourite }) {
   const handleFavourite = () => {
     onAddFavourite(property);
+
   };
 
   return (

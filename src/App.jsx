@@ -12,54 +12,37 @@ function App() {
   const [favourites, setFavourites] = useState([]);
 
   function handleSearch(criteria) {
+    // SIMPLIFIED SEARCH FUNCTION
     let filtered = properties.filter((property) => {
       // Type filter
-      if (criteria.type && criteria.type !== "any") {
-        if (property.type !== criteria.type) {
-          return false;
-        }
-      }
-
-      // Price filters
-      if (criteria.minPrice && property.price < criteria.minPrice) {
+      if (criteria.type && criteria.type !== "any" && property.type !== criteria.type) {
         return false;
       }
 
-      if (criteria.maxPrice && property.price > criteria.maxPrice) {
-        return false;
-      }
+      // Price filter
+      if (criteria.minPrice && property.price < Number(criteria.minPrice)) return false;
+      if (criteria.maxPrice && property.price > Number(criteria.maxPrice)) return false;
 
-      // Bedroom filters
-      if (criteria.minBeds && property.bedrooms < criteria.minBeds) {
-        return false;
-      }
-
-      if (criteria.maxBeds && property.bedrooms > criteria.maxBeds) {
-        return false;
-      }
+      // Bedroom filter
+      if (criteria.minBeds && property.bedrooms < Number(criteria.minBeds)) return false;
+      if (criteria.maxBeds && property.bedrooms > Number(criteria.maxBeds)) return false;
 
       // Postcode filter
-      if (criteria.postcode && criteria.postcode.trim() !== "") {
-        if (!property.postcode.toUpperCase().startsWith(criteria.postcode.toUpperCase().trim())) {
-          return false;
-        }
+      if (criteria.postcode && !property.postcode.startsWith(criteria.postcode.toUpperCase())) {
+        return false;
       }
 
-      // Date filtering
-      if (criteria.startDate || criteria.endDate) {
+      // Date filter (simplified)
+      if (criteria.startDate) {
         const propertyDate = new Date(property.added);
+        const startDate = new Date(criteria.startDate);
+        if (propertyDate < startDate) return false;
+      }
 
-        if (criteria.startDate) {
-          const startDate = new Date(criteria.startDate);
-          startDate.setHours(0, 0, 0, 0);
-          if (propertyDate < startDate) return false;
-        }
-
-        if (criteria.endDate) {
-          const endDate = new Date(criteria.endDate);
-          endDate.setHours(23, 59, 59, 999);
-          if (propertyDate > endDate) return false;
-        }
+      if (criteria.endDate) {
+        const propertyDate = new Date(property.added);
+        const endDate = new Date(criteria.endDate);
+        if (propertyDate > endDate) return false;
       }
 
       return true;
@@ -69,43 +52,32 @@ function App() {
   }
 
   function addToFavourites(property) {
-    const exists = favourites.find((fav) => fav.id === property.id);
-    if (!exists) {
+    if (!favourites.find(fav => fav.id === property.id)) {
       setFavourites([...favourites, property]);
     }
   }
 
   function removeFromFavourites(id) {
-    setFavourites(favourites.filter((fav) => fav.id !== id));
+    setFavourites(favourites.filter(fav => fav.id !== id));
   }
 
   function clearFavourites() {
-    if (window.confirm("Are you sure you want to clear all favourites?")) {
+    if (window.confirm("Clear all favourites?")) {
       setFavourites([]);
     }
   }
 
-  function handleFavouritesDragOver(e) {
+  function handleDrop(e) {
     e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  }
-
-  function handleFavouritesDrop(e) {
-    e.preventDefault();
-    const propertyId = e.dataTransfer.getData("text/plain");
-    
-    if (!propertyId.startsWith("remove:")) {
-      const property = properties.find((p) => p.id === propertyId);
-      if (property) {
-        addToFavourites(property);
-      }
-    }
+    const propertyId = e.dataTransfer.getData("propertyId");
+    const property = properties.find(p => p.id === propertyId);
+    if (property) addToFavourites(property);
   }
 
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>🏠 RightMove Clone</h1>
+        <h1>🏠 Estate Agent Search</h1>
       </header>
 
       <main className="app-main">
@@ -119,11 +91,8 @@ function App() {
           <div className="search-container">
             <div className="left-panel">
               <SearchForm onSearch={handleSearch} />
-
-              <div 
-                onDragOver={handleFavouritesDragOver} 
-                onDrop={handleFavouritesDrop}
-              >
+              
+              <div onDragOver={(e) => e.preventDefault()} onDrop={handleDrop}>
                 <FavouritesList
                   favourites={favourites}
                   onRemove={removeFromFavourites}
@@ -134,12 +103,9 @@ function App() {
 
             <div className="right-panel">
               <h2>Search Results ({results.length} properties)</h2>
-
+              
               {results.length === 0 ? (
-                <div className="no-results">
-                  <p>No properties found matching your criteria.</p>
-                  <p>Try adjusting your search filters.</p>
-                </div>
+                <p>No properties found. Try different filters.</p>
               ) : (
                 <div className="results-grid">
                   {results.map((property) => (

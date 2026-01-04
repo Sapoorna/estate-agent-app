@@ -17,7 +17,6 @@ describe("Estate Agent App", () => {
     const favouriteButtons = screen.getAllByText(/❤️ Add to Favourites/i);
     fireEvent.click(favouriteButtons[0]);
 
-    // Should show alert (you might need to mock alert)
     expect(screen.getByText(/⭐ Favourites/i)).toBeInTheDocument();
   });
 

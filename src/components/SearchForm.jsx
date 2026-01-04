@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { DropdownList, NumberPicker, DateTimePicker } from "react-widgets";
-import "react-widgets/styles.css";
+import { NumberPicker, DateTimePicker } from "react-widgets";
 
 function SearchForm({ onSearch }) {
   const [formData, setFormData] = useState({
@@ -20,7 +19,7 @@ function SearchForm({ onSearch }) {
   };
 
   const handleReset = () => {
-    const resetData = {
+    setFormData({
       type: "any",
       postcode: "",
       minPrice: null,
@@ -29,9 +28,8 @@ function SearchForm({ onSearch }) {
       maxBeds: null,
       startDate: null,
       endDate: null,
-    };
-    setFormData(resetData);
-    onSearch(resetData);
+    });
+    onSearch({});
   };
 
   return (
@@ -57,11 +55,9 @@ function SearchForm({ onSearch }) {
         <input
           type="text"
           className="styled-input"
-          placeholder="e.g., BR1, NW1, KT1"
+          placeholder="e.g., BR1"
           value={formData.postcode}
-          onChange={(e) =>
-            setFormData({ ...formData, postcode: e.target.value })
-          }
+          onChange={(e) => setFormData({ ...formData, postcode: e.target.value })}
         />
       </div>
 
@@ -73,7 +69,6 @@ function SearchForm({ onSearch }) {
             onChange={(value) => setFormData({ ...formData, minPrice: value })}
             placeholder="Any"
             min={0}
-            step={10000}
           />
         </div>
         <div className="form-group">
@@ -83,7 +78,6 @@ function SearchForm({ onSearch }) {
             onChange={(value) => setFormData({ ...formData, maxPrice: value })}
             placeholder="Any"
             min={0}
-            step={10000}
           />
         </div>
       </div>
@@ -117,8 +111,7 @@ function SearchForm({ onSearch }) {
           <DateTimePicker
             value={formData.startDate}
             onChange={(value) => setFormData({ ...formData, startDate: value })}
-            placeholder="Select start date"
-            includeTime={false}
+            placeholder="Any date"
           />
         </div>
         <div className="form-group">
@@ -126,18 +119,17 @@ function SearchForm({ onSearch }) {
           <DateTimePicker
             value={formData.endDate}
             onChange={(value) => setFormData({ ...formData, endDate: value })}
-            placeholder="Select end date"
-            includeTime={false}
+            placeholder="Any date"
           />
         </div>
       </div>
 
       <div className="form-buttons">
         <button type="submit" className="btn-primary">
-          Search Properties
+          Search
         </button>
         <button type="button" className="btn-secondary" onClick={handleReset}>
-          Reset Filters
+          Reset
         </button>
       </div>
     </form>

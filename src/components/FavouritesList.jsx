@@ -3,35 +3,20 @@ import { useState } from 'react';
 function FavouritesList({ favourites, onRemove, onClear }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
-  // Drag handlers for items in favourites list
-  const handleItemDragStart = (e, propertyId) => {
-    e.dataTransfer.setData("propertyId", propertyId); // Changed key
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  // Handlers for the REMOVE drop zone
-  const handleRemoveZoneDragOver = (e) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    e.dataTransfer.dropEffect = "move";
     setIsDraggingOver(true);
   };
 
-  const handleRemoveZoneDragLeave = (e) => {
-    e.preventDefault();
+  const handleDragLeave = () => {
     setIsDraggingOver(false);
   };
 
-  const handleRemoveZoneDrop = (e) => {
+  const handleDrop = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setIsDraggingOver(false);
-    
-    const propertyId = e.dataTransfer.getData("propertyId"); // Changed key
-    
-    if (propertyId) {
-      onRemove(propertyId); // This should now work!
-    }
+    const propertyId = e.dataTransfer.getData("propertyId");
+    if (propertyId) onRemove(propertyId);
   };
 
   if (favourites.length === 0) {
@@ -39,7 +24,7 @@ function FavouritesList({ favourites, onRemove, onClear }) {
       <div className="favourites-container">
         <h3>⭐ Favourites</h3>
         <div className="favourites-dropzone">
-          <p>Drag properties here or click the heart icon to add favourites.</p>
+          <p>Drag properties here or click ❤️ to add favourites.</p>
         </div>
       </div>
     );
@@ -51,41 +36,29 @@ function FavouritesList({ favourites, onRemove, onClear }) {
       
       <div className="favourites-dropzone">
         {favourites.map((fav) => (
-          <div 
-            key={fav.id} 
-            className="favourite-item"
-            draggable="true"
-            onDragStart={(e) => handleItemDragStart(e, fav.id)}
-          >
+          <div key={fav.id} className="favourite-item" draggable onDragStart={(e) => e.dataTransfer.setData("propertyId", fav.id)}>
             <img 
               src={fav.images[0] || "https://via.placeholder.com/80x60"} 
               alt={fav.shortDescription}
-              onError={(e) => {
-                e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='60'%3E%3Crect width='80' height='60' fill='%231a73e8'/%3E%3Ctext x='40' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'%3EImage%3C/text%3E%3C/svg%3E";
-              }}
+              style={{ width: "80px", height: "60px", borderRadius: "6px" }}
             />
-            <div style={{ flex: 1 }}>
+            <div>
               <strong>£{fav.price.toLocaleString()}</strong>
-              <p style={{ fontSize: '0.9rem', margin: '0.25rem 0' }}>{fav.shortDescription}</p>
-              <p style={{ fontSize: '0.85rem', color: '#666' }}>{fav.location}</p>
+              <p style={{ fontSize: "0.9rem" }}>{fav.shortDescription}</p>
             </div>
-            <button 
-              onClick={() => onRemove(fav.id)} 
-              className="remove-btn"
-              aria-label="Remove from favourites"
-            >
+            <button onClick={() => onRemove(fav.id)} className="remove-btn">
               ×
             </button>
           </div>
         ))}
       </div>
 
-      {/* DRAG TO REMOVE ZONE */}
       <div 
-        className={`remove-drop-zone ${isDraggingOver ? 'drag-over-remove' : ''}`}
-        onDragOver={handleRemoveZoneDragOver}
-        onDragLeave={handleRemoveZoneDragLeave}
-        onDrop={handleRemoveZoneDrop}
+        className="favourites-dropzone"
+        style={isDraggingOver ? { borderColor: "red", background: "#ffe6e6" } : {}}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
         🗑️ Drag items here to remove
       </div>

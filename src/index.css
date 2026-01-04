@@ -1,4 +1,4 @@
-/* index.css - COMPLETELY FIXED */
+/* index.css - SIMPLIFIED VERSION */
 * {
   margin: 0;
   padding: 0;
@@ -8,14 +8,11 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
-  color: #333; /* BLACK TEXT - FIXED */
+  color: #333;
   min-height: 100vh;
   margin: 0;
-  display: block; /* Remove flex centering */
 }
 
 #root {
   width: 100%;
 }
-
-/* Remove all the problematic color-scheme stuff */
