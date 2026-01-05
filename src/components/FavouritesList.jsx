@@ -10,7 +10,7 @@ function FavouritesList({ favourites = [], onRemove, onClear }) {
     e.dataTransfer.effectAllowed = "move";
     setDraggedItemId(favId);
   };
-
+  
   const handleFavDragEnd = () => {
     console.log("Drag ended");
     setDraggedItemId(null);

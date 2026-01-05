@@ -14,10 +14,10 @@ describe("Estate Agent App", () => {
     render(<App />);
 
     // Click first favourite button
-    const favouriteButtons = screen.getAllByText(/❤️ Add to Favourites/i);
+    const favouriteButtons = screen.getAllByText(/ Add to Favourites/i);
     fireEvent.click(favouriteButtons[0]);
 
-    expect(screen.getByText(/⭐ Favourites/i)).toBeInTheDocument();
+    expect(screen.getByText(/ Favourites/i)).toBeInTheDocument();
   });
 
   test("3. Search filters properties correctly", async () => {
@@ -56,22 +56,22 @@ describe("Estate Agent App", () => {
     expect(screen.getByText(/Drag properties here/i)).toBeInTheDocument();
 
     // Add to favourites
-    const favouriteButtons = screen.getAllByText(/❤️ Add to Favourites/i);
+    const favouriteButtons = screen.getAllByText(/ Add to Favourites/i);
     fireEvent.click(favouriteButtons[0]);
 
     // Should now show favourites count
-    expect(screen.getByText(/⭐ Favourites \(1\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/ Favourites \(1\)/i)).toBeInTheDocument();
   });
 
   test("6. Can remove property from favourites by dragging out", () => {
     render(<App />);
 
     // Add a property to favourites first
-    const favouriteButtons = screen.getAllByText(/❤️ Add to Favourites/i);
+    const favouriteButtons = screen.getAllByText(/ Add to Favourites/i);
     fireEvent.click(favouriteButtons[0]);
 
     // Should now have 1 favourite
-    expect(screen.getByText(/⭐ Favourites \(1\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/ Favourites \(1\)/i)).toBeInTheDocument();
 
     // Simulate dragging the favourite item out (this tests the drag-out removal)
     // Note: In practice, you'd need to simulate the drag events
